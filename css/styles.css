@@ -91,6 +91,18 @@ main .sectionDatos button:hover {
     border-radius: 0 10px 0 10px;
 }
 
+main .sectionDatos .alert {
+    background: rgba(255,0,0,0.5);
+    clear: both;
+    margin-top: 70px;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 10px;
+    color: #fff;
+    display: none;
+}
+
 main .sectionMapa {
     width: 100%;
     position: relative;

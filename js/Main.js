@@ -44,8 +44,13 @@ $("#btnBuscarRuta").click(function() {
     let destino = $("#destino").val();
 
     if (origen != null && origen != "" && destino != null && destino != "") {
-        $("#sectionMapa").html('');
-        grafo.bfs(origen, destino);
+        if (origen != destino) {
+            $("#alert").slideUp(300);
+            $("#sectionMapa").html('');
+            grafo.bfs(origen, destino);
+        } else {
+            $("#alert").slideDown(300);
+        }
     } else {
         if (origen == null || origen == "") {
             alert("Por favor selecciona un punto de partida.");
