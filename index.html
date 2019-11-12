@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MetroAPP</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <main>
+        <section class="sectionDatos">
+            <h1>ENCUENTRA LA RUTA MÁS RÁPIDA A TU DESTINO</h1>
+            <h2 class="subtitulo">¿En dónde te encuentras?</h2>
+
+            <select id="origen">
+                <option value="">---</option>
+            </select>
+
+            <h2 class="subtitulo">¿Hacia dónde vas?</h2>
+            
+            <select id="destino">
+                <option value="">---</option>
+            </select>
+
+            <button id="btnBuscarRuta">ENCONTRAR</button>
+        </section>
+
+        <section class="sectionMapa">
+            <div id="sectionMapa"></div>
+        </section>
+    </main>
+    
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/Vertice.js"></script>
+    <script src="js/Grafo.js"></script>
+    <script src="js/Main.js"></script>
+</body>
+</html>
