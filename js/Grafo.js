@@ -1,7 +1,7 @@
 class Grafo {
     constructor(type) {
         this.vertices = [];
-        this.type = type;
+        this.type = type; //Grafos dirigidos o grafos no dirigidos (1 y 2)
     }
 
     addVertex(vertexID, vertexName) {
@@ -25,11 +25,13 @@ class Grafo {
         }    
     }
 
-    addEdge(u,v) {
+    addEdge(u, v, costo) {
         let existeU = false, existeV = false;
         let nodoU = null, nodoV = null;
 
+        //Validamos que los vértices que se quieren conectar existan en el grafo.
         for (let i = 0; i < this.vertices.length; i++) {
+            //Si existen los dos vértices en el grafo; entonces podemos hacer la conexión (Es decir, crear la arista), de lo contrario no.
             if (this.vertices[i].id == u) {
                 nodoU = this.vertices[i];
                 existeU = true;
@@ -43,10 +45,12 @@ class Grafo {
 
         if (existeU && existeV) {
             if (this.type == 1) {
-                nodoU.addNeighbour(v);
+                //El grafo es dirigido.
+                nodoU.addNeighbour(v, costo);
             } else {
-                nodoU.addNeighbour(v);
-                nodoV.addNeighbour(u);
+                //El grafo no es dirigido.
+                nodoU.addNeighbour(v, costo);
+                nodoV.addNeighbour(u, costo);
             }
         }
     }
@@ -64,48 +68,51 @@ class Grafo {
     }
 
     bfs(startVertex, finalVertex) {
-        let startId = this.getVertexIndex(startVertex);
-        let finalId = this.getVertexIndex(finalVertex);
+        let startId = this.getVertexIndex(startVertex); //Te imprime el nodo. (La posición)
+        let finalId = this.getVertexIndex(finalVertex); //Te imprime el nodo. (La posición)
 
         if (startId >= 0 && finalId >= 0) {
-            //Iniciamos la cola rutas con el primer elemento a analizar
+            //Iniciamos la cola "rutas" con el primer elemento a analizar.
             let rutas = [];
             rutas.push([startVertex]);
 
-            //Almacenamos los elementos ya explorados en el grafo
+            //Almacenamos los vértices ya explorados en el grafo.
             let explorados = [];
             explorados.push(startVertex);
-            let nueva_ruta, ruta_actual, nodo_actualID, nodo_actual, vecino_actualID, vecino_actual, salida = ``;
+
+            let nueva_ruta; 
+            let ruta_actual;
+            let nodo_actualID;
+            let nodo_actual;
+            let vecino_actualID;
+            let vecino_actual;
+            let salida = ``;
 
             //Mientras hayan rutas por explorar
             while (rutas.length > 0) {
-                ruta_actual = rutas.shift();
-                nodo_actualID = ruta_actual[ruta_actual.length-1];
-                nodo_actual = this.vertices[this.getVertexIndex(nodo_actualID)];
+                ruta_actual = rutas.shift(); //Ruta actual
 
-                //Analizamos cada uno de los vecinos del nodo actual en la ruta
+                nodo_actualID = ruta_actual[ruta_actual.length-1]; //Imprime el ID del nodo actual.
+
+                nodo_actual = this.vertices[this.getVertexIndex(nodo_actualID)]; //Imprime el nodo como tal.
+
+                // Analizamos cada uno de los vecinos del nodo actual en la ruta
                 for (let i = 0; i < nodo_actual.neighbors.length; i++) {
-                    vecino_actualID = nodo_actual.neighbors[i];
-                    vecino_actual = this.vertices[this.getVertexIndex(vecino_actualID)];
+                    vecino_actualID = nodo_actual.neighbors[i][0]; //Imprime el ID de los vecinos del nodo.
+
+                    vecino_actual = this.vertices[this.getVertexIndex(vecino_actualID)]; //Imprime los nodos vecinos.
                     
                     if (explorados.includes(vecino_actualID)) {
+                        //Verifica si ya se encuentra el nodo actual en los explorados.
+                        //Si ya se encuentra no se hace nada.
                     } else {
                         //Preguntamos si el nodo actual es el nodo destino
                         if (vecino_actualID == finalVertex) {
-                            salida += `<h3>La ruta más corta de ` + this.vertices[startId].name + ` a ` + this.vertices[finalId].name + `</h3><div class='ruta'>`;
-                            
                             for (let j = 0; j < ruta_actual.length; j++) {
                                 salida += `<span class='vertice'>` + this.vertices[this.getVertexIndex(ruta_actual[j])].name + `</span>`;
                             }
 
                             salida += `<span class='vertice'>` + this.vertices[this.getVertexIndex(vecino_actualID)].name + `</span></div>`;
-                            
-                            $("#sectionMapa").append("<img src='img/Loading.gif'>");
-
-                            setTimeout(() => {
-                                $("#sectionMapa").html("");
-                                $("#sectionMapa").append(salida);
-                            }, 1500);
                         } else {
                             nueva_ruta = ruta_actual.slice();
                             nueva_ruta.push(vecino_actualID);
